@@ -20,9 +20,16 @@ export default {
     {
       name: 'VueReactivity', // window.VueReactivity
       file: 'dist/vue.js', // 输出文件路径
-      format: 'umd', // 打包模式
-      sourcemap: true, // sourceMap
-    }
+      format: 'umd', // 打包模式umd,前端使用<script src="">形式引用
+      sourcemap: true, // source map用于调试报错定位
+    },
+    {
+      // dir: "dist/esm", // 与file作用一样，默认入口为index.js
+      file: 'dist/esm/index.js',
+      format: "esm", // es modue, 前端需要使用<script type="module" src="">形式引用
+      exports: "named", // 不加可能会有Use `output.exports: 'named'` to disable this warning警告
+      sourcemap: true, // source map用于调试报错定位
+    },
   ],
   plugins: [
     nodeResolve({  // 查找和打包node_modules中的第三方模块
