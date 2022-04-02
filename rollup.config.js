@@ -18,6 +18,10 @@ const isProduction = process.env.NODE_ENV === 'production';
 // 不需打包的依赖
 const externalDeps = Object.keys(pkg.dependencies || {}).concat(builtinModules)
 
+const banner = `/* ${pkg.name} version is ${pkg.version} commonjs */`;
+// module.export 兼容es5默认导出
+const footer = 'module.exports = Object.assign(exports.default, exports);\n/* email: 16619930394@163.com */';
+
 export default {
   input: 'src/index.ts', // 打包入口
   output: [ // 打包输出
@@ -28,11 +32,20 @@ export default {
       sourcemap: true, // source map用于调试报错定位
     },
     {
+      file: pkg.main, // 输出文件路径
+      format: 'cjs', // 打包模式
+      exports: 'named',
+      banner, // 顶部提示
+      footer, // 底部提示,
+    },
+    {
       // dir: "dist/esm", // 与file作用一样，默认入口为index.js
-      file: 'dist/esm/index.js',
+      file: pkg.module, // 输出文件路径
       format: "esm", // es modue, 前端需要使用<script type="module" src="">形式引用
       exports: "named", // 不加可能会有Use `output.exports: 'named'` to disable this warning警告
       sourcemap: true, // source map用于调试报错定位
+      banner, // 顶部提示
+      footer, // 底部提示,
     },
   ],
   external: externalDeps, // 排除打包依赖
