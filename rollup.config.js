@@ -6,6 +6,7 @@ import typescript from 'rollup-plugin-typescript2'
 import serve from 'rollup-plugin-serve'
 import { terser } from 'rollup-plugin-terser';
 import { resolve } from 'path'
+import { builtinModules } from 'module';
 import pkg from "./package.json";
 
 // 前端 or node, 前端项目开始服务
@@ -13,6 +14,9 @@ const isF2e = true
 // 环境变量
 const isDevelopment = process.env.NODE_ENV === 'development';
 const isProduction = process.env.NODE_ENV === 'production';
+
+// 不需打包的依赖
+const externalDeps = Object.keys(pkg.dependencies || {}).concat(builtinModules)
 
 export default {
   input: 'src/index.ts', // 打包入口
@@ -31,6 +35,7 @@ export default {
       sourcemap: true, // source map用于调试报错定位
     },
   ],
+  external: externalDeps, // 排除打包依赖
   plugins: [
     nodeResolve({  // 查找和打包node_modules中的第三方模块
       extensions: ['.js', '.ts']
