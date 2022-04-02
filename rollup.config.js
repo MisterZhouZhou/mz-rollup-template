@@ -1,13 +1,18 @@
 import nodeResolve from '@rollup/plugin-node-resolve';
-import typescript from 'rollup-plugin-typescript2'
-import serve from 'rollup-plugin-serve'
 import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
+import typescript from 'rollup-plugin-typescript2'
+import serve from 'rollup-plugin-serve'
+import { terser } from 'rollup-plugin-terser';
 import { resolve } from 'path'
+import pkg from "./package.json";
 
+// 前端 or node, 前端项目开始服务
+const isF2e = true
 // 环境变量
-const env = process.env.NODE_ENV;
+const isDevelopment = process.env.NODE_ENV === 'development';
+const isProduction = process.env.NODE_ENV === 'production';
 
 export default {
   input: 'src/index.ts', // 打包入口
@@ -36,11 +41,12 @@ export default {
       preventAssignment: true,
       'process.env.NODE_ENV': JSON.stringify(env)
     }),
-    env === 'development' ? serve({ // 开启服务
-      open: false,
-      openPage: '/public/index.html',
-      port: 3000,
+    isDevelopment && isF2e && serve({ // 开启服务
+      open: true, // 打开浏览器
+      openPage: '/public/index.html', // 默认打开的页面
+      port: 3000, // 端口号
       contentBase: '',
-    }) : null,
+    }),
+    isProduction && terser(), // 压缩代码
   ]
 }
