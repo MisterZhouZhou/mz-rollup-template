@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   // 使用cjs，esm模式时配置
-  // "main": "dist/cjs/index.js",
-  // "module": "dist/esm/index.js",
+  // "main": "dist/index.js",
+  // "module": "dist/index.es.js",
   "scripts": {
     "dev": "NODE_ENV=development rollup -c -w",
     "build": "NODE_ENV=production rollup -c && && yarn copy",
