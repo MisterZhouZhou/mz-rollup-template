@@ -60,8 +60,9 @@ function replaceDev(format) {
  * @returns {RollupOptions}
  */
 function createOption(format, outputFile) {
-  // umd
+  // 是否为umd, umd模式会挂载到window上
   const isUMD = format === 'umd'
+
   // plugins
   const plugins = isUMD ? [
     rollupResolve(),
@@ -73,27 +74,32 @@ function createOption(format, outputFile) {
     }),
     rollupCommonjs(),
     rollupTypescript(),
-    isProduction && rollupTerser({
-      output: {
-        comments: false
-      },
-      module: false
-    }) // 压缩代码
   ] : [
     rollupTypescript(),
-    isDevelopment && serve({ // 开启服务
-      open: true, // 打开浏览器
-      openPage: '/public/index.html', // 默认打开的页面
-      port: 3000, // 端口号
-      contentBase: '',
-    }),
-    isProduction && rollupTerser({
-      output: {
-        comments: false
-      },
-      module: format === 'esm'
-    }), // 压缩代码
   ]
+
+  // 开发环境且为前端项目，开启项目调试
+  // 生产环境进行代码压缩
+  if (isDevelopment && isUMD) {
+    plugins.push(
+      serve({ // 开启服务
+        open: true, // 打开浏览器
+        openPage: '/public/index.html', // 默认打开的页面
+        port: 3000, // 端口号
+        contentBase: '',
+      })
+    )
+  } else if (isProduction) {
+    plugins.push(
+      rollupTerser({
+        output: {
+          comments: false
+        },
+        module: format === 'esm'
+      }), // 压缩代码)
+    )
+  }
+
   // config
   const config = {
     input: resolve(__dirname, 'src/index.ts'), // 文件编译入口
@@ -107,6 +113,8 @@ function createOption(format, outputFile) {
     },
     plugins, // 插件
   }
+
+  // umd挂载在window上，名称为VueReactivity
   if (isUMD) {
     config.output.name = 'VueReactivity'
     config.output.exports = 'named'

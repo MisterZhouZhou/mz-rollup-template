@@ -1,7 +1,7 @@
 /*
  * @Author: misterzhou
  * @Date: 2022-04-01 10:15:57
- * @LastEditTime: 2022-04-05 13:40:36
+ * @LastEditTime: 2022-04-05 14:09:41
  * @LastEditors: misterzhou
  * @FilePath: /mz-rollup-template/src/reactivity/reactive.ts
  * @Description:
@@ -40,6 +40,7 @@ export function reactive(target) {
       return res
     },
     set(target, key, value, receiver) {
+      // reflect
       const res = Reflect.set(target, key, value, receiver)
       console.log('$--set-', res);
       return res

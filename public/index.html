@@ -4,16 +4,27 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>mz-rollup-template</title>
   </head>
   <body>
-    ddd
-    <script type="module">
-      import { reactive } from '../dist/index.es.js'
+    <h1>mz-rollup-template</h1>
+    <!-- umd -->
+    <script src="../dist/index.js"></script>
+    <script>
+      const { reactive } = VueReactivity
       const res = reactive({name: 'zw'})
       
       res.name = 'zw1'
       console.log('$---', res.name);
     </script>
+
+    <!-- module -->
+    <!-- <script type="module">
+      import { reactive } from '../dist/index.es.js'
+      const res = reactive({name: 'zw'})
+      
+      res.name = 'zw1'
+      console.log('$---', res.name);
+    </script> -->
   </body>
 </html>
