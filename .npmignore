@@ -1,0 +1,13 @@
+.vscode/
+.DS_Store
+node_modules
+public
+scripts
+src
+temp
+lib
+api-extractor*
+rollup.config*
+tsconfig*
+yarn.lock
+yarn-error*

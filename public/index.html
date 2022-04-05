@@ -8,6 +8,12 @@
   </head>
   <body>
     ddd
-    <script src="/dist/vue.js"></script>
+    <script type="module">
+      import { reactive } from '../dist/index.es.js'
+      const res = reactive({name: 'zw'})
+      
+      res.name = 'zw1'
+      console.log('$---', res.name);
+    </script>
   </body>
 </html>
